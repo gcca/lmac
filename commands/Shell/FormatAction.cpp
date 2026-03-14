@@ -1,0 +1,103 @@
+#include "FormatAction.hpp"
+
+#include <iostream>
+
+FormatAction::FormatAction(std::string fmt) : fmt(std::move(fmt)) {}
+
+int FormatAction::Run() {
+  if (fmt != "fish" && fmt != "zsh" && fmt != "bash") {
+    std::cerr << "Error: --format must be one of: fish, zsh, bash\n";
+    return 1;
+  }
+  if (fmt == "fish")
+    PrintFishCompletions();
+  return 0;
+}
+
+void FormatAction::PrintFishCompletions() {
+  std::cout
+      << "complete -c lmac -f\n"
+         "\n"
+         "# top-level commands\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a claude      -d "
+         "'Combined Claude overview'\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a claude-cli  -d "
+         "'Manage Claude CLI configs'\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a claude-desk -d "
+         "'Manage claude desktop'\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a gh           -d "
+         "'GitHub utilities'\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a help         -d "
+         "'Show help'\n"
+         "complete -c lmac -n '__fish_use_subcommand' -a shell        -d "
+         "'Generate shell integration'\n"
+         "\n"
+         "# claude subcommands\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from help list' -a help -d 'Show help'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude; and not __fish_seen_subcommand_from help list' -a list -d 'Combined Desktop and CLI list'\n"
+         "\n"
+         "# claude-cli subcommands\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-cli; and not __fish_seen_subcommand_from choose help list show-creds' -a choose     -d 'Interactively select a suffix group'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-cli; and not __fish_seen_subcommand_from choose help list show-creds' -a help       -d 'Show help'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-cli; and not __fish_seen_subcommand_from choose help list show-creds' -a list       -d 'List Claude CLI entries'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-cli; and not __fish_seen_subcommand_from choose help list show-creds' -a show-creds -d 'Print Claude Code keychain credentials'\n"
+         "\n"
+         "# claude-desk subcommands\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-desk; and not __fish_seen_subcommand_from choose list' -a choose -d 'Interactively select a Claude installation'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from claude-desk; and not __fish_seen_subcommand_from choose list' -a list   -d 'List all Claude installations'\n"
+         "\n"
+         "# gh subcommands\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and not "
+         "__fish_seen_subcommand_from help search sm' -a help   -d 'Show help'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and not "
+         "__fish_seen_subcommand_from help search sm' -a search -d 'Search pull "
+         "requests or issues by owner'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and not "
+         "__fish_seen_subcommand_from help search sm' -a sm     -d 'Summarize pull "
+         "requests or issues'\n"
+         "\n"
+         "# gh search positional args\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search; and not __fish_seen_subcommand_from "
+         "help issues prs' -a help   -d 'Show help'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search; and not __fish_seen_subcommand_from "
+         "help issues prs' -a issues -d 'Search issues'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search; and not __fish_seen_subcommand_from "
+         "help issues prs' -a prs    -d 'Search pull requests'\n"
+         "\n"
+         "# gh search options\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search' -s d -l date   -d 'Date in "
+         "YYYY-MM-DD format' -r\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search' -s m -l months -d 'Months back "
+         "for range start' -r\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from search' -s o -l owner  -d 'GitHub owner "
+         "(org or user)' -r\n"
+         "\n"
+         "# gh sm positional args\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from sm; and not __fish_seen_subcommand_from "
+         "help issue pr' -a help  -d 'Show help'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from sm; and not __fish_seen_subcommand_from "
+         "help issue pr' -a issue -d 'Search issues'\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from sm; and not __fish_seen_subcommand_from "
+         "help issue pr' -a pr    -d 'Search pull requests'\n"
+         "\n"
+         "# gh sm options\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from sm' -s d -l date   -d 'Date in "
+         "YYYY-MM-DD format' -r\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from gh; and "
+         "__fish_seen_subcommand_from sm' -s m -l months -d 'Months back for "
+         "range start' -r\n"
+         "\n"
+         "# shell options\n"
+         "complete -c lmac -n '__fish_seen_subcommand_from shell' -s f -l "
+         "format -d 'Shell format' -r -a 'fish zsh bash'\n";
+}
